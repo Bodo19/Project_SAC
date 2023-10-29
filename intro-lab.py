@@ -85,37 +85,28 @@ json_file = '/mnt/c/Users/crist/Desktop/Facultate/Master/Anu1_Sem1/SAC/Project_S
 upload_items_to_recombee(json_file)
 upload_items_properties(json_file)
 
-# Function to get a random selection of item IDs from the server
 def get_random_items_from_server(count):
     try:
-        # Use the ListItems request to get a list of item IDs
         response = client.send(ListItems(count=count))
         return response
     except Exception as e:
         print(f"An error occurred while fetching items from the server: {str(e)}")
         return []
 
+interactions_per_user = 3  
 
-# Define the number of interactions each user will make
-interactions_per_user = 3  # Adjust as needed
-
-user_ids = ['user1', 'user2', 'user3']  # Replace with your user IDs
+user_ids = ['user1', 'user2', 'user3']  
 send_user_ids(user_ids)
 
-# Create and submit random interactions for each user
 for user_id in user_ids:
     for _ in range(interactions_per_user):
-        # Get a random selection of item IDs
         random_item_ids = get_random_items_from_server(interactions_per_user)
         
-        # Generate a random timestamp (you can adjust the range as needed)
         random_timestamp = random.randint(0, 999999999)
         
-        # Create and submit interactions with the randomly selected items
         user_interactions = [{'user_id': user_id, 'item_id': item_id, 'timestamp': random_timestamp} for item_id in random_item_ids]
         submit_user_interactions(user_interactions)
 
-# Request recommendations for each user
 for user_id in user_ids:
     num_recommendations = 5  # Adjust as needed
     request_recommendations(user_id, num_recommendations)
